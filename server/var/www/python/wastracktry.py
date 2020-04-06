@@ -4,12 +4,24 @@
 from cgi import parse_qs, escape
 import json
 import datetime
+import codecs
+import re
+import MySQLdb as conn
+#import fcntl #for race conditions 
 
 PYTHONIOENCODING="UTF-8"
 
 WASTMsgStorePath="/WASymTrMsgs/last/"
 time1 = 0
 time2 = 30
+
+def connectDB():
+    	#db = conn.connect(user="root", passwd="rayan123", database="AnnoDB", charset="utf8")
+	db = conn.connect(user="hali", passwd="was#Aub20", database="WASymTracker", charset="utf8")
+	cursor = db.cursor()
+	return db, cursor
+
+
 
 def getValue_hier_keys(d, keys, default=None):
     current = d
@@ -27,8 +39,19 @@ class WASTMsg:
       self.time=getValue_hier_keys(d,['timeUtc'])
       self.text=getValue_hier_keys(d,['message','text'])
 
-      self.isVoice = getValue_hier_keys(d,['message','media','contentType']) == 'voice'
+      self.contentType = getValue_hier_keys(d,['message','media','contentType'])
+      if self.contentType != None and 'audio' in self.contentType: 
+         self.isVoice = True 
+         match = re.search('audio.(.+);.*',self.contentType)
+         if match : 
+           self.extension = match.group(1)
+      else :
+         self.isVoice = False
+         self.extension = None
+
       self.VNUrl = getValue_hier_keys(d,['message','media','mediaUri'])
+      if (self.VNUrl != None) :
+        self.isVoice = True
 
       self.isLocation = False
       self.latitude = None
@@ -40,7 +63,7 @@ class WASTMsg:
           self.longitude = getValue_hier_keys(d,['message','custom','location','longitude'])
 
    def csvHeader(self): 
-     header = "Sender,Time,Text,IsVoice,IsLocation,VoiceURL,Latitude,Longitude" 
+     header = "Sender,Time,Text,IsVoice,IsLocation,VoiceURL,VoiceExtension,Latitude,Longitude" 
      return header 
 
    def csvAll(self): 
@@ -73,6 +96,10 @@ class WASTMsg:
         csvres += '"' + self.VNUrl + '"' 
      csvres += ','
 
+     if self.extension != None : 
+        csvres += self.extension 
+     csvres += ','
+
      if self.latitude != None : 
         csvres += '"' + str(self.latitude) + '"' 
      csvres += ','
@@ -97,28 +124,52 @@ class WASTMsg:
         time2 = str(currentDT.year) + '.'+ str(currentDT.month) + '.' + str(currentDT.day) + '.'  + str(currentDT.hour) + '.00'
 
       #make sure to use time1 and time2 here
-      f=open(path+"WASymTrack_"+str(time1) + "_" + str(time2) + ".csv", "a+")
+      filename = path+"WASymTrack_"+str(time1) + "_" + str(time2) + ".csv"
+      f=codecs.open(filename, encoding='utf-8', mode='a+')
       f.write(self.csvAll())
       f.write("\n")
       f.close()
+      filename = path+"Logs.txt"
+      if (self.contentType != None) :
+        f=codecs.open(filename, encoding='utf-8', mode='a+')
+        f.write(self.contentType)
+        f.write(", ")
+        f.write(self.extension)
+        f.write(", ")
+        f.write(str(self.isVoice))
+        f.write("\n")
+        f.close()
+
+   def writeToDB(self, db, cursor):
+      db, cursor=connectDB()
+      addMessage="INSERT INTO Messages "+\
+         "(SENDER, SENT, TEXT, ISVOICE, ISLOCATION, VOICEURL, VOICEEXT, LONGITUDE, LATITUDE)"+\
+         "(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+      cursor.execute(addMessage, \
+         (self.sender, self.time, self.text, self.isVoice, self.isLocation, self.VNUrl, self.extension, self.longitude, self.latitude,))
+      db.commit()
+
+      
 
 
 def application(environ, start_response):
-    try:
-       request_body_size = int(environ.get('CONTENT_LENGTH', 0))
-    except (ValueError):
-       request_body_size = 0
-    request_body = environ['wsgi.input'].read(request_body_size)
-    dictionary=json.loads(request_body)
-    status = '200 OK'
-    rec = WASTMsg(dictionary)
-#    output = "<?xml version='1.0'?> <wastrack>" + rec.csvAll() + "</wastrack>"
-    output = "<?xml version='1.0'?> <wastrack> none </wastrack>"
-    rec.writeToFile(WASTMsgStorePath)
-    response_headers = [('Content-type', 'text/xml'),
-                        ('Content-Length', str(len(output)))]
-    start_response(status, response_headers)
-    return [output]
+   db, cursor=connectDB()
+   try:
+      request_body_size = int(environ.get('CONTENT_LENGTH', 0))
+   except (ValueError):
+      request_body_size = 0
+   request_body = environ['wsgi.input'].read(request_body_size)
+   dictionary=json.loads(request_body)
+   status = '200 OK'
+   rec = WASTMsg(dictionary)
+   #    output = "<?xml version='1.0'?> <wastrack>" + rec.csvAll() + "</wastrack>"
+   output = "<?xml version='1.0'?> <wastrack> none </wastrack>"
+   rec.writeToFile(WASTMsgStorePath)
+   rec.writeToDB(db,cursor)
+   response_headers = [('Content-type', 'text/xml'),
+                     ('Content-Length', str(len(output)))]
+   start_response(status, response_headers)
+   return [output]
 
 
 if __name__ == '__main__':

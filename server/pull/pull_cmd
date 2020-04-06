@@ -2,4 +2,4 @@
 mkdir -p ~/WASymTrMsgs/last
 # remote sync depends on a ssh key based synchronization with the server
 # replace username and server.withapi.com with the appropriate values
-rsync -avz username@server.withapi.com:/WASymTrMsgs/last/* ~/WASymTrMsgs/last
+rsync -avz username@server.withapi.com:/WASymTrMsgs/last/* ~/WASymTrMsgs/last && python downloadVNs.py
