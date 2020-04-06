@@ -1,0 +1,27 @@
+#TODO: main idea still holds but needs major updating. 
+
+When Python script receives a message
+  time = getsystemtime
+  if time is between time1 and time2 
+     append a line to File /WASymTrack/incoming.time1_time2.csv
+  else 
+     close file /WASymTrack/incoming.time1_time2.csv
+     compress file /WASymTrack/incoming.time1_time2.csv using "tar czf ..." 
+     append a line: "Ready incoming.time1_time2.csv" to file /WASymTrack/ReadyTasks
+     update interval time1=time2 and time2=time2+30 mins
+     create new file /WASymTrack/incoming.time1_time2.csv
+     append (phone,msg,location,sound_url,time_stamp) tuple to /WASymTrack/incoming.time1_time2.csv #at least one of msg,location,sound_url is not null 
+
+Meanwhile, a script get_last_data.sh on AUB machine Kitab does the following:
+   scp file /WASymTrack/ReadyTasks 
+   Compute the difference between it and between ReadyTasks_prev
+   Retreive the difference files using scp diff_results
+   Move ReadTasks_prev to /WASymTrack/ReadyTasks_timestamp
+   Move ReadTasks to ReadTasks_prev
+
+
+We set this up such that 
+1. Script  get_last_data.sh runs every half an hour at day:hour:15/45 mins:00 
+2. time1 and time2 in python script are setup half an hour apart at day:hour:00/30 mins:00 
+
+
