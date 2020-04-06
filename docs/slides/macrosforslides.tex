@@ -1,0 +1,182 @@
+\usepackage{beamerthemesplit}%headline and footline split in two parts
+\usepackage{rotating}
+\usepackage{refstrings}
+\usepackage{listings}
+%\usepackage{pgf}
+
+
+\usepackage{calc}
+\usepackage{environ}
+
+\newcommand{\halfmargin}{0.01\paperwidth}
+%\newcommand{\margin}{0.10\paperwidth}
+
+%\beamersetrightmargin{\margin}
+%\beamersetleftmargin{\margin}
+
+\NewEnviron{wideframe}[1][]{%
+  \begin{frame}{#1}
+    \makebox[\textwidth][c]{
+      \begin{minipage}{\dimexpr\paperwidth-\halfmargin-\halfmargin\relax}
+        \BODY
+      \end{minipage}}
+  \end{frame}
+}
+
+
+
+
+\usetheme{Szeged}
+% AnnArbor Antibes Bergen Berkeley Berlin Boadilla boxes 
+% CambridgeUS Copenhagen Darmstadt default Dresden Frankfurt 
+% Goettingen Hannover Ilmenau JuanLesPins Luebeck Madrid 
+% Malmoe Marburg Montpellier PaloAlto Pittsburgh Rochester 
+% Singapore Szeged Warsaw
+
+%\setbeamercovered{transparent}
+% or whatever (possibly just delete it)
+
+\usecolortheme{seagull} 
+% albatross beaver beetle crane default dolphin 
+% dove fly lily orchid rose seagull seahorse 
+% sidebartab structure whale wolverine
+
+% classical large headings
+\usefonttheme[onlylarge]{structuresmallcapsserif}
+
+% thick navigation font 
+\usefonttheme[onlysmall]{structurebold} 
+
+%\setbeamerfont{title}{shape=\itshape,family=\rmfamily}
+%\setbeamercolor{title}{fg=red!80!black,bg=red!20!white}
+
+\input{macros}
+
+\usepackage{cooltooltips}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{positioning}
+%\usepackage{multimedia}
+
+\newcommand{\myoutline}{ \begin{frame}<beamer> 
+\frametitle{Outline} 
+  \tableofcontents[currentsection,currentsubsection] 
+  \end{frame} }
+
+\DeclareGraphicsRule{*}{mps}{*}{}
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+%\pgfdeclareimage[height=1.5cm]{university-logo}{university-logo-aub-trnsprt}
+\pgfdeclareimage[height=2.5cm]{university-logo}{university-logo-aub-trnsprt}
+\pgfdeclareimage[height=.75cm]{uni-logo-small}{university-logo-aub-trnsprt}
+%\logo{\tikz\node[opacity=0.8,fill=red] {\pgfuseimage{university-logo}};}
+
+
+\newcommand{\setnavsymbolsEmpty}{
+\setbeamertemplate{navigation symbols}{
+}
+}
+
+\newcommand{\setnavsymbolsMin}{
+\setbeamertemplate{navigation symbols}{
+  \insertslidenavigationsymbol 
+  \insertsubsectionnavigationsymbol  
+  \insertdocnavigationsymbol }
+}
+
+\newcommand{\setnavsymbolsAll}{
+  \setbeamertemplate{navigation symbols}{
+    \insertslidenavigationsymbol 
+    \insertsubsectionnavigationsymbol  
+    \insertdocnavigationsymbol 
+%~~\cooltooltiptoggle{\fcolorbox{gray}{white}{t} }
+    ~~\pgfuseimage{uni-logo-small} 
+    \scriptsize
+%~~\insertframenumber~of~\ref{thankyouframe} %\inserttotalframenumber 
+%~~\insertframenumber~of~\insertpartendpage
+    ~~\insertframenumber%~of~63
+%~~\insertframenumber~of~\insertpresentationendpage
+  }
+}
+
+%\author[Author, Another] % (optional, use only with lots of authors)
+%{F.~Author\inst{1} \and S.~Another\inst{2}}
+%\author{}
+\author[FZ]{MSFEA Team for COVID 19 Tracking \\
+%  American University of Beirut \\
+%  \\
+  \tcci{fz11@aub.edu.lb} \\
+   \tcci{ http://research-fadi.aub.edu.lb/}
+}
+
+% - Give the names in the same order as the appear in the paper.
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+
+\institute[AUB] % (optional, but mostly needed)
+{
+%  {\tikz\node[opacity=0.2,fill=gray] {\pgfuseimage{university-logo}};} \\
+  \pgfuseimage{university-logo} \\
+%American University of Beirut \\
+    Electrical and Computer Engineering Departmemt
+  % \vskip 3ex
+%  {MWF 10:00 AM -- 10:50 AM \\
+%    Bechtel Wing A-403} \\
+%   {fadi.zaraket@aub.edu.lb  }\\ 
+%   {\tt http://webfea.fea.aub.edu.lb/fadi}
+}
+
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+
+
+%\begin{frame}[fragile,containsverbatim]
+%\begin{frame}[containsverbatim,allowframebreaks]
+%\begin{frame}[plain]
+\newcommand{\bfm}{\begin{frame}}
+
+%\newcommand{\bfmv}{\begin{frame}[containsverbatim]}
+
+%\newcommand{\bfmp}{\begin{frame}[plain]}
+
+%\newcommand{\efrm}{\end{frame}}
+
+
+\subtitle {EECE 636 --- Fall 2018} 
+\vskip 1ex
+\date{}
+
+\setnavsymbolsEmpty
+
+\AtBeginSubsection[]
+{% \myoutline 
+}
+
+\newcommand{\arpctitleframe}{
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+}
+
+\newcommand{\arpcoutlineframe}{
+\begin{frame}
+  \frametitle{Outline}
+  \tableofcontents
+\end{frame}
+}
+
+\setbeamertemplate{headline}
+{%
+  \begin{beamercolorbox}{section in head/foot}
+  %\begin{beamercolorbox}{}
+    \vskip2pt\insertnavigation{\paperwidth}\vskip2pt
+  \end{beamercolorbox}%
+}
+
+
+\newcommand{\cyanhref}[2]{\href{#1}{\color{cyan}{#2}}} 
+
+\newcommand{\shortref}[3]{#1~[#2-#3] }
+\newcommand{\shortreftip}[4]{#1~ \cooltooltip[.5 .25 0][1 1 1]{}{}{t:#4}{#4}{[#2-#3]}}

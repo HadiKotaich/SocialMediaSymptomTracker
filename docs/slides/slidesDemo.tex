@@ -1,0 +1,266 @@
+%\documentclass[handout,t,xcolor=pdftex,dvipsnames,table]{beamer}
+\documentclass[t,xcolor=pdftex,dvipsnames,table]{beamer}
+\title[ST-SMM]{Symptom Tracker using Social Media Messaging --- {\small for users with limited internet } } 
+\input{macrosforslides} 
+
+\subtitle{} 
+
+\begin{document} 
+
+\arpctitleframe 
+%\arpcoutlineframe
+
+\begin{frame}
+  \frametitle{What is STSMM?} 
+  \be
+  \i Framework that collects symptoms using social media messaging
+    \be 
+    \i Whatsapp, \textcolor{gray}{FB-messenger, SMS, Telegram, ...} 
+    \ee
+  \i It receives information through dedicated contacts (phone numbers)
+    \be
+    \i Text messages, voice notes and locations 
+    \ee
+  \i Extracts symptoms from messages and saves them in a data base 
+    \be
+    \i Analytics on collected data provides informed decision making 
+    \ee
+  \i Complementary for massive testing and {\em compensatory} when that is lacking 
+  \ee
+\end{frame}
+
+\begin{frame}
+  \frametitle{How does it work?} 
+  \be
+  \i Users send their COVID-19 related symptoms daily 
+    \be 
+    \i Even if they are feeling Ok or have no symptoms
+    \ee 
+  \i Together with locations this helps track symptom evolution 
+    \be 
+    \i Across regions and demographies
+    \ee
+  \i This allows for 
+    \be 
+    \i Better planning 
+    \i Early intervention 
+    \i Micro-interventions
+    \i Helps enable multicycle Lockdown-release decisions 
+    \ee
+  \i<2-> {\bf Requires high coverage, including users with limited internet access} 
+  \ee
+\end{frame} 
+
+
+\begin{frame}
+  \frametitle{Is it useful?} 
+  \be
+  \i Infectious and viral disease experts at AUB think it is
+extremely useful
+    \be 
+    \i Medical Doctors: Ummaya Msharaffie, Faek Jamali, 
+                        Hala Tfaili, Elie Akl, Hussein Ismail, $\ldots$
+    \i Epidemic and viral control experts: Drs Heinrich Dhone, Hassan Zaraket
+    \ee 
+  \i Minister of Health endorsed the idea 
+  \i Adhoc COVID-19 modeling team at AUB can readily use such data if it exists
+  \ee
+\end{frame}
+
+
+\begin{wideframe}
+  \frametitle{Existing Symptom Tracker Mobile
+  Applications}
+  \be
+  \i King's College London and Guy's and St Thomas' Biomedical Research Center
+     \be \i \url{https://covid.joinzoe.com} 
+     \ee
+  \i Apple released a CDC based COVID 19 screening tool
+  \i MoPH added a symptom checker on its Health Mobile App
+    \be \i Not clear if it collects data \ee 
+  \i AUBMC added a symptom checker on its AUBHealth Mobile App
+    \be \i Not clear if it collects data \ee 
+  \i Great initiatives: however, {\bf require data package, literacy, and
+  minimal mobile application literacy}
+  \ee
+\end{wideframe}
+
+\begin{wideframe}
+  \frametitle{Limitations of the Mobile Application Approach} 
+  \be
+  \i A good majority has limited data packages
+  \be \i  For example 500 MB of WhatsApp use for 4 USD monthly \ee 
+\i  A good majority is Mobile App illiterate
+\be 
+\i  They do not know how to install and use a Mobile App and depend on
+mobile service stores to do so even for minimal issues
+\ee 
+\i  A good majority use WhatsApp as a cheaper telephone alternative
+\be \i  Conversations and recorded notes \ee 
+\i  A significant majority is illiterate
+  \ee
+
+\end{wideframe} 
+
+
+
+\begin{wideframe}
+  \frametitle{One Use: Lockdown-release cycles} 
+  \includegraphics[width=.8\textwidth,height=5.7cm]{jpgs/lockdown_release}
+
+  \be
+  \i Implementing these cycles may be necessary to manage future outbreaks
+  \i We need tools to more accurately predict
+    \be \i Titrated lockdown release and Reinstate lockdown thresholds \ee 
+  \ee
+\end{wideframe} 
+
+
+
+
+\begin{wideframe}
+  \frametitle{WhatsApp based Symptom Tracker (WaSyT)} 
+
+  \be
+  \i Dedicate WhatsApp enabled phone numbers: WhatsApp Robots (WaBots)
+  \be \i Similar to the World Health Organization information WhatsApp bot
+      \i We only need the receiving end
+      \ee 
+  \i Automate receiving text and voice messages through WaBots
+  \be \i The messages get decoded and saved into a database
+      \i The database entries relate users, locations and symptoms across time
+      \ee
+  \i Analyze symptom evolution across areas and recommend interventions
+  \ee
+\end{wideframe} 
+
+\begin{wideframe}
+  \frametitle{WHO - COVID 19 WhatsApp Robot} 
+  \includegraphics[width=.8\textwidth,height=5.7cm]{jpgs/WHO_Bot} 
+  
+  {\tiny
+  \url{https://www.undp.org/content/undp/en/home/news-centre/news/2020/COVID-19_WHO_UNICEF_UNDP_Partner_with_WhatsApp_to_Get_Real_Time_Health_Information_to_Billions_around_the_World.html} 
+  } 
+\end{wideframe} 
+
+\begin{wideframe}
+  \frametitle{India WhatsApp Robot} 
+  \framesubtitle{ \url{https://techcrunch.com/2020/03/21/india-whatsapp-mygov-corona-helpdesk-bot/} 
+  }
+  \be 
+  \i Awareness WhatsApp robot targeting limited internet users
+  \i Targets curbing down misinformation spread
+  \ee
+  \includegraphics[width=.8\textwidth,height=5.7cm]{jpgs/ETnT2hOUEAAuoEe}
+  
+\end{wideframe} 
+
+
+
+\begin{wideframe}
+  \frametitle{How can this be done?}
+  \be
+  \i Gateway to collect messages 
+    \be \i Alternative 1: WhatsApp business API
+        \i Alternative 2: Chrome browser extensions over \url{web.whatsapp.com} 
+    \ee
+  \i Speech to text 
+    \be \i Alternative 1: existing Arabic Speech recognition system 
+        \be \i RDI and QCRI exist for general purpose text 
+        \ee 
+        \i Alternative 2: Signal processing for keyword spotting 
+        \be \i More accurate but requires time for data collection and development 
+        \ee
+    \ee
+  \i Symptom extraction from text messages 
+    \be \i Natural language processing based on bag of words augmentation for each symptom
+    \ee 
+  \i Analytics: readily available with AUB AdHoc COVID-19 modeling team
+  \ee
+\end{wideframe}
+
+
+\begin{wideframe}
+  \frametitle{SMM-SymTrack flow diagram } 
+  \input{figs/SMMSymTrak.pdf_t} 
+\end{wideframe}
+
+
+\begin{wideframe}
+  \frametitle{What are we collecting?} 
+  \includegraphics[width=.8\textwidth,height=5.7cm]{jpgs/symptoms} 
+
+  Simple answers to these questions is a good start 
+  (image courtesy of municipality of Intilias)
+  
+\end{wideframe} 
+
+\begin{wideframe}
+  \frametitle{Example messages } 
+  \includegraphics[width=.8\textwidth,height=5.7cm]{jpgs/examples} 
+
+  Each message will be decoded into a database entry, 
+  related to the source phone number and its location
+\end{wideframe} 
+
+
+\begin{wideframe}
+  \frametitle{AUB-MSFEA Team} 
+  \be 
+  \i Nourhan Abdul-Samad, Student
+  \i Ibrahim Abou-Faycal, Faculty 
+  \i Christopher Haddad, Student 
+  \i Ali-Akbar Haydoura, Student
+  \i Hady Koteich, Student 
+  \i Ayham Olleik, Student 
+  \i Fadi Zaraket, Faculty 
+  \ee 
+\end{wideframe} 
+
+\begin{wideframe}
+  \frametitle{Status so far} 
+  \be 
+  \i 90\% work functional prototype
+  \i Gateway is provided by \url{CM.com} and we implemented server to integrate with their API
+    \be 
+    \i We have two weeks free trial 
+    \i Underway work to build alternative: chrome extension
+    \ee
+  \i Speech to text is provided by \url{RDI-ai.com} and we implemented scripts to integrate with their solution
+    \be \i We have two weeks free trial 
+        \i Underway work to build alternative with QCRI data set and Kaldi 
+        \i May explore CMUSphinx for keyword spotting as well 
+    \ee
+  \i Symptom extraction from text: almost complete
+  \i Integration: almost complete 
+  \i Collected Arabic voice data sets of symptoms 
+    \be \i 500 sentences each with Male/Female voices 
+        \i Annotated at sentence level 
+    \ee
+  \ee 
+\end{wideframe} 
+
+
+\begin{wideframe}
+  \frametitle{Final notes } 
+  \be 
+  \i Need a good tutorial and promotion campaign for people to use this once done
+  \i In addition to WhatsApp, we recommend the symptom tracker to be a standalone application
+  \i Do we still need to do massive testing if we do this?
+  \be \i This is complementary wider scale control measure if massive testing is implemented
+      \i Compensatory measure when massive testing is lacking
+      \ee 
+  \ee 
+\end{wideframe} 
+
+
+\begin{wideframe}
+  \frametitle{Thank you! } 
+  \be 
+  \i Questions are welcome. 
+  \ee 
+\end{wideframe} 
+
+
+
+\end{document}
