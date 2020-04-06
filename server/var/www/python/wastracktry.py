@@ -17,7 +17,7 @@ time2 = 30
 
 def connectDB():
     	#db = conn.connect(user="root", passwd="rayan123", database="AnnoDB", charset="utf8")
-	db = conn.connect(user="hali", passwd="was#Aub20", database="WASymTracker", charset="utf8")
+	db = conn.connect(user="user", passwd="passwd", database="WASymTracker", charset="utf8")
 	cursor = db.cursor()
 	return db, cursor
 

@@ -1,0 +1,5 @@
+# Cron Job to run every 30 mins (on the 15th and 45th minute of each hour)
+# Update the path to the command as appropriate
+# Use crontab -e to add the cron job to your system
+15,45 * * * * /PathTo/pull_cmd
+
