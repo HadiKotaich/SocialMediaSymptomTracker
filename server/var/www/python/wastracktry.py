@@ -146,7 +146,7 @@ class WASTMsg:
          "(SENDER, SENT, TEXT, ISVOICE, ISLOCATION, VOICEURL, VOICEEXT, LONGITUDE, LATITUDE)"+\
          "(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
       cursor.execute(addMessage, \
-         (self.sender, self.time, self.text, self.isVoice, self.isLocation, self.VNUrl, self.extension, self.longitude, self.latitude,))
+         (self.sender, " ".join(self.time.split('T')), self.text, self.isVoice, self.isLocation, self.VNUrl, self.extension, self.longitude, self.latitude,))
       db.commit()
 
       
