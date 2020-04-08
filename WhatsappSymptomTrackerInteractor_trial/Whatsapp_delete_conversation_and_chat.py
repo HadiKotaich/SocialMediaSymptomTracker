@@ -1,14 +1,21 @@
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
+# Authors: 
+# Ayham Olleik --  abo00@mail.aub.edu
+# Nourhane Abdel Samad
+
+
+#The driver required for chrome to open is automatically downloaded here
 driver = webdriver.Chrome(ChromeDriverManager().install())
 driver.get('https:web.whatsapp.com')
 
 
 # pick a contact name to press on a conversation
-name = input('Enter the name of user or group : ')
+name = input('Enter the name of user or group conversation you want to delete : ')
 user = driver.find_element_by_xpath('//span[@title = "{}"]'.format(name))
 user.click()
+
 
 
 # clear messages
